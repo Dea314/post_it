@@ -17,7 +17,8 @@ export default function Home() {
     queryFn: allPosts,
     queryKey: ["posts"],
   });
-  if (error) return error;
+  if (typeof error === "object" && error !== null && "message" in error)
+    return error.message;
   if (isLoading) return "Loading...";
   console.log(data);
 
@@ -26,12 +27,12 @@ export default function Home() {
       <AddPost />
       {data?.map((post) => (
         <Post
-          Comment={post.Comment}
           key={post.id}
+          id={post.id}
           name={post.user.name}
           avatar={post.user.image}
           postTitle={post.title}
-          id={post.id}
+          Comment={post.Comment || ([] as any)}
         />
       ))}
     </main>
